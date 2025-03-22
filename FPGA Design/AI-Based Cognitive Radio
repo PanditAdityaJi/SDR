@@ -1,0 +1,24 @@
+import numpy as np
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Conv1D, Flatten
+
+# Generate sample RF signals (OFDM-based)
+X_train = np.random.rand(1000, 64, 1)  # 1000 samples, 64 subcarriers
+y_train = np.random.randint(0, 2, 1000)  # Binary classification (Occupied/Free)
+
+# Build AI model
+model = Sequential([
+    Conv1D(16, kernel_size=3, activation='relu', input_shape=(64, 1)),
+    Flatten(),
+    Dense(10, activation='relu'),
+    Dense(2, activation='softmax')
+])
+
+model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+
+# Train AI model
+model.fit(X_train, y_train, epochs=10, batch_size=32)
+
+# Save model for FPGA integration
+model.save("5g_spectrum_model.h5")
