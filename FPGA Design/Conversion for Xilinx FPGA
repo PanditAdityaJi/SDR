@@ -1,0 +1,10 @@
+import tf2onnx
+import tensorflow as tf
+
+# Load trained model
+model = tf.keras.models.load_model("5g_spectrum_model.h5")
+
+# Convert to ONNX format
+onnx_model, _ = tf2onnx.convert.from_keras(model)
+with open("5g_spectrum_model.onnx", "wb") as f:
+    f.write(onnx_model.SerializeToString())
