@@ -1,0 +1,32 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+
+entity OFDM_FFT is
+    Port ( clk : in STD_LOGIC;
+           rst : in STD_LOGIC;
+           data_in_real : in INTEGER;
+           data_in_imag : in INTEGER;
+           data_out_real : out INTEGER;
+           data_out_imag : out INTEGER);
+end OFDM_FFT;
+
+architecture Behavioral of OFDM_FFT is
+    signal fft_real : INTEGER := 0;
+    signal fft_imag : INTEGER := 0;
+begin
+    process(clk, rst)
+    begin
+        if rst = '1' then
+            fft_real <= 0;
+            fft_imag <= 0;
+        elsif rising_edge(clk) then
+            fft_real <= data_in_real + data_in_imag;  -- Basic FFT Computation
+            fft_imag <= data_in_real - data_in_imag;
+        end if;
+    end process;
+    
+    data_out_real <= fft_real;
+    data_out_imag <= fft_imag;
+end Behavioral;
