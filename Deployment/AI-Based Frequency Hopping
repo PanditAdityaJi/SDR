@@ -1,0 +1,27 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+
+entity FREQ_HOPPING is
+    Port ( clk : in STD_LOGIC;
+           ai_decision : in STD_LOGIC;
+           selected_freq : out INTEGER);
+end FREQ_HOPPING;
+
+architecture Behavioral of FREQ_HOPPING is
+    signal current_freq : INTEGER := 1800; -- Start at 1800 MHz
+begin
+    process(clk)
+    begin
+        if rising_edge(clk) then
+            if ai_decision = '1' then
+                current_freq <= current_freq + 10; -- Hop to next channel
+            else
+                current_freq <= current_freq;
+            end if;
+        end if;
+    end process;
+
+    selected_freq <= current_freq;
+end Behavioral;
