@@ -1,0 +1,39 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity TB_AI_DECISION is
+end TB_AI_DECISION;
+
+architecture test of TB_AI_DECISION is
+    signal clk : STD_LOGIC := '0';
+    signal rf_spectrum : INTEGER := 50;
+    signal decision : STD_LOGIC;
+
+    component AI_DECISION
+        Port ( clk : in STD_LOGIC;
+               rf_spectrum : in INTEGER;
+               decision : out STD_LOGIC);
+    end component;
+
+begin
+    UUT: AI_DECISION port map (clk, rf_spectrum, decision);
+
+    -- Clock process
+    process
+    begin
+        wait for 10 ns;
+        clk <= not clk;
+    end process;
+
+    -- Test Cases
+    process
+    begin
+        wait for 20 ns;
+        rf_spectrum <= 150; -- Should set decision = 1 (Occupied)
+
+        wait for 20 ns;
+        rf_spectrum <= 50; -- Should set decision = 0 (Free)
+        
+        wait;
+    end process;
+end test;
