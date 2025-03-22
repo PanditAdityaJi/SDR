@@ -1,0 +1,25 @@
+import numpy as np
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Conv1D, Flatten
+
+# Generate sample RF spectrum data (64 frequency bins)
+X_train = np.random.rand(5000, 64, 1)  # 5000 training samples
+y_train = np.random.randint(0, 2, 5000)  # 0 = Free, 1 = Occupied
+
+# Define the AI model
+model = Sequential([
+    Conv1D(16, kernel_size=3, activation='relu', input_shape=(64, 1)),
+    Flatten(),
+    Dense(10, activation='relu'),
+    Dense(2, activation='softmax')  # Output: 2 classes (Free/Occupied)
+])
+
+# Compile the model
+model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+
+# Train the model
+model.fit(X_train, y_train, epochs=10, batch_size=32)
+
+# Save the trained model
+model.save("5g_spectrum_model.h5")
