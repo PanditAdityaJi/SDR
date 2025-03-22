@@ -1,0 +1,15 @@
+import serial
+
+# Connect to FPGA via UART
+fpga = serial.Serial("/dev/ttyUSB0", baudrate=115200, timeout=1)
+
+# Send RF Spectrum Data
+rf_data = np.random.randint(0, 255, (64,))  # Simulated RF data
+fpga.write(rf_data.tobytes())
+
+# Read AI decision from FPGA
+ai_decision = fpga.read(1)
+if ai_decision == b'1':
+    print("Spectrum Occupied: Switching Frequency")
+else:
+    print("Spectrum Free: Using Current Frequency")
