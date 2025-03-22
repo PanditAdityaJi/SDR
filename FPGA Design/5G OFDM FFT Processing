@@ -1,0 +1,27 @@
+module ofdm_fft (
+    input clk,                      // Clock signal
+    input rst,                      // Reset signal
+    input signed [15:0] data_in_real, // Real input signal
+    input signed [15:0] data_in_imag, // Imaginary input signal
+    output signed [15:0] data_out_real, // Real output
+    output signed [15:0] data_out_imag  // Imaginary output
+);
+    // FFT Processing Block (Using Xilinx IP Core or Custom FFT)
+    reg signed [15:0] fft_real [0:63];
+    reg signed [15:0] fft_imag [0:63];
+    
+    always @(posedge clk or posedge rst) begin
+        if (rst) begin
+            fft_real[0] <= 0;
+            fft_imag[0] <= 0;
+        end else begin
+            // FFT Calculation Logic (Radix-2 FFT)
+            fft_real[0] <= data_in_real + data_in_imag;
+            fft_imag[0] <= data_in_real - data_in_imag;
+        end
+    end
+
+    assign data_out_real = fft_real[0];
+    assign data_out_imag = fft_imag[0];
+
+endmodule
